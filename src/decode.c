@@ -1,8 +1,10 @@
-#include <stdio.h>
-
-#include "../include/struct.h"
 #include "../include/decode.h"
+
+#include <stdio.h>
+#include <stdbool.h>
+
 #include "../include/errors.h"
+#include "../include/struct.h"
 #include "../include/tools.h"
 
 bool is_char_valid(char c) {
@@ -35,7 +37,7 @@ bool is_sentence_valid(char* sentence, int* max_stack_size) {
     return !parenthesis;
 }
 
-void execute(BrainFuck* bf, char* sentence, int array[]) {
+void execute(BrainFuck* bf, char* sentence, int array[], bool* print) {
     switch (sentence[bf->index]) {
         case ' ':
             break;
@@ -53,6 +55,7 @@ void execute(BrainFuck* bf, char* sentence, int array[]) {
             break;
         case '.':
             putchar(array[bf->pointer]);
+            *print = true;
             break;
         case ',':
             array[bf->pointer] = getchar();
@@ -78,6 +81,7 @@ void execute(BrainFuck* bf, char* sentence, int array[]) {
 Error decode(char* sentence, int array[]) {
     int max_stack_size;
     BrainFuck bf;
+    bool print = false;
     if (!is_sentence_valid(sentence, &max_stack_size)) {
         return INVALID_SENTENCE;
     }
@@ -85,9 +89,11 @@ Error decode(char* sentence, int array[]) {
         return ALLOCATION_ERROR;
     }
     while (sentence[bf.index] != '\0') {
-        execute(&bf, sentence, array);
+        execute(&bf, sentence, array, &print);
+    }
+    if (print) {
+        putchar('\n');
     }
     free_brainfuck(&bf);
-    putchar('\n');
     return OK;
 }

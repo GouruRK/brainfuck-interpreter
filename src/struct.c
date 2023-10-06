@@ -1,7 +1,8 @@
+#include "../include/struct.h"
+
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "../include/struct.h"
 #include "../include/errors.h"
 
 Error init_brainfuck(BrainFuck* bf, int max_stack_size) {

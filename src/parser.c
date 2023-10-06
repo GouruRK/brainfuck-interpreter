@@ -1,10 +1,10 @@
+#include "../include/parser.h"
+
 #include <getopt.h>
 #include <stdlib.h>
-#include <string.h>
 
-#include "../include/struct.h"
-#include "../include/parser.h"
 #include "../include/errors.h"
+#include "../include/struct.h"
 
 Args init_args(void) {
     Args args;
@@ -12,12 +12,6 @@ Args init_args(void) {
     args.help = false;
     args.sentence = NULL;
     return args;
-}
-
-void free_args(Args* args) {
-    if (args->sentence) {
-        free(args->sentence);
-    }
 }
 
 Error parse_arguments(Args* args, int argc, char* argv[]) {
@@ -50,11 +44,7 @@ Error parse_arguments(Args* args, int argc, char* argv[]) {
     }
     if (optind < argc) {
         if (optind == argc - 1) {
-            args->sentence = (char*)malloc(sizeof(char) * (strlen(argv[optind]) + 1));
-            if (!args->sentence) {
-                return ALLOCATION_ERROR;
-            }
-            strcpy(args->sentence, argv[optind]);
+            args->sentence = argv[optind];
         }
     }
     return OK;

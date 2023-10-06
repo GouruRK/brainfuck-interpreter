@@ -1,6 +1,6 @@
-#include <stdio.h>
-
 #include "../include/errors.h"
+
+#include <stdio.h>
 
 void print_error(Error err) {
     switch (err) {

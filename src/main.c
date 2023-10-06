@@ -1,12 +1,12 @@
+#include <getopt.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <getopt.h>
 
-#include "../include/struct.h"
-#include "../include/parser.h"
 #include "../include/encode.h"
-#include "../include/decode.h"
 #include "../include/errors.h"
+#include "../include/decode.h"
+#include "../include/parser.h"
+#include "../include/struct.h"
 
 int main(int argc, char* argv[]) {
     Args args = init_args();
@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
     }
     if (err != OK) {
         print_error(err);
+        return 1;
     }
-    free_args(&args);
+    return 0;
 }

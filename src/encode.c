@@ -1,8 +1,9 @@
+#include "../include/encode.h"
+
 #include <stdio.h>
 
-#include "../include/struct.h"
-#include "../include/encode.h"
 #include "../include/errors.h"
+#include "../include/struct.h"
 #include "../include/tools.h"
 
 void write_n_times(char c, int n) {
@@ -58,6 +59,9 @@ int convert(char c, int pointer, int array[]) {
 }
 
 Error encode(char* sentence, int array[]) {
+    if (sentence[0] == '\0') {
+        return OK;
+    }
     int pointer = 0;
     for (int i = 0; sentence[i] != '\0'; i++) {
         pointer = convert(sentence[i], pointer, array);
