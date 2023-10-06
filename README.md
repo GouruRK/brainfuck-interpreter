@@ -6,6 +6,7 @@ Brainfuck coder and decoder made in C.
 - [Brainfuck Interpreter](#brainfuck-interpreter)
 - [Install](#install)
 - [Run](#run)
+- [Example](#example)
 
 # Install
 
@@ -35,4 +36,20 @@ Such as bellow
         [-e, --encode] Indicate to encode the given sentence
                 Require a non null sentence
         [-h, --help] Print this message
+```
+
+# Example
+
+Remember that brainfuck only allow the following characters : `'<'`, `'>'`, `','`, `'.'`, `'+'`, `'-'`, `'['` and `']'`. Spaces (`' '`) are allowed but skipped, as they don't belong to brainfuck's characters.
+
+* Encoding
+```shell
+./brainfuck -e "Hello World"
++++++++[>++++++++++<-]>++.<++[>++++++++++<-]>+++++++++.+++++++..+++.>+++[>++++++++++<-]>++.<+++++[>++++++++++<-]>+++++.<++[>++++++++++<-]>++++.+++.------.--------.
+```
+
+* Decoding 
+```shell
+./brainfuck -d "+++++++[>++++++++++<-]>++.<++[>++++++++++<-]>+++++++++.+++++++..+++.>+++[>++++++++++<-]>++.<+++++[>++++++++++<-]>+++++.<++[>++++++++++<-]>++++.+++.------.--------."
+Hello World
 ```
