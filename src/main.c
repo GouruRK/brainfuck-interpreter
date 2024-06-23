@@ -21,9 +21,9 @@ int main(int argc, char* argv[]) {
     }
     int array[ARRAY_SIZE] = {};
     if (args.act == ENCODE) {
-        err = encode(args.sentence, array);
+        err = encode(args.input, array);
     } else if (args.act == DECODE) {
-        err = decode(args.sentence, array);
+        err = decode(args.input, array);
     }
     if (err != OK) {
         print_error(err);

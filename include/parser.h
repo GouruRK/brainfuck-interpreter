@@ -5,7 +5,7 @@
 #include "struct.h"
 
 typedef struct {
-    char* sentence;
+    char* input;
     Action act;
     bool help;
 } Args;

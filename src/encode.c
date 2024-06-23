@@ -6,24 +6,24 @@
 #include "../include/struct.h"
 #include "../include/tools.h"
 
-void write_n_times(char c, int n) {
+static void write_n_times(char c, int n) {
     for (int i = 0; i < n; i++) {
         putchar(c);
     }
 }
 
-void write_loop_entry(void) {
+static void write_loop_entry(void) {
     putchar(LOOP);
     putchar(INCREMENT);
 }
 
-void write_loop_end(void) {
+static void write_loop_end(void) {
     putchar(DECREMENT);
     putchar(SUB);
     putchar(END);
 }
 
-int convert(char c, int pointer, int array[]) {
+static int convert(char c, int pointer, int array[]) {
     int delta = c - array[pointer];
     int loop = 10;
     if (array[pointer] == c) {

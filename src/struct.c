@@ -17,7 +17,7 @@ Error init_brainfuck(BrainFuck* bf, int max_stack_size) {
 }
 
 void free_brainfuck(BrainFuck* bf) {
-    if (bf->stack) {
+    if (bf && bf->stack) {
         free(bf->stack);
     }
 }

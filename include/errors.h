@@ -16,12 +16,6 @@ typedef enum {
 
 void print_error(Error err);
 
-void print_allocation_error(void);
-
-void print_argument_required_error(void);
-
-void print_invalid_sentence_error(void);
-
 void print_help(void);
 
 #endif

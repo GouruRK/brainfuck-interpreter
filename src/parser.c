@@ -10,7 +10,7 @@ Args init_args(void) {
     Args args;
     args.act = NONE;
     args.help = false;
-    args.sentence = NULL;
+    args.input = NULL;
     return args;
 }
 
@@ -18,10 +18,10 @@ Error parse_arguments(Args* args, int argc, char* argv[]) {
     opterr = 0;
     int opt, opt_index = 0;
     static struct option long_options[] = {
-        {"help", 0, 0, 'h'},
-        {"encode", 0, 0, 'e'},
-        {"decode", 0, 0, 'd'},
-        {0, 0, 0, 0}
+        {"help",   no_argument, 0, 'h'},
+        {"encode", no_argument, 0, 'e'},
+        {"decode", no_argument, 0, 'd'},
+        {0,        0,           0, 0}
     };
     while ((opt = getopt_long(argc, argv, "hed", long_options, &opt_index)) != -1) {
         switch (opt) {
@@ -44,7 +44,7 @@ Error parse_arguments(Args* args, int argc, char* argv[]) {
     }
     if (optind < argc) {
         if (optind == argc - 1) {
-            args->sentence = argv[optind];
+            args->input = argv[optind];
         }
     }
     return OK;
@@ -55,7 +55,7 @@ Error parse(Args* args, int argc, char* argv[]) {
     if (err != OK) {
         return err;
     } 
-    if ((!(args->sentence) || (args->act == NONE)) && !(args->help)) {
+    if ((!(args->input) || (args->act == NONE)) && !(args->help)) {
         return ARGUMENT_REQUIRED;
     }
     return OK;

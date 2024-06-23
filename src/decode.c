@@ -7,16 +7,20 @@
 #include "../include/struct.h"
 #include "../include/tools.h"
 
-bool is_char_valid(char c) {
+static const int valid_chars[NB_CHARACTERS] = {
+    INCREMENT, DECREMENT, ADD, SUB, OUTPUT, INPUT, LOOP, END, SPACE
+};
+
+static bool is_char_valid(char c) {
     for (int i = 0; i < NB_CHARACTERS; i++) {
-        if (c == VALID_CHARACTERS[i]) {
+        if ((int)c == valid_chars[i]) {
             return true;
         }
     }
     return false;
 }
 
-bool is_sentence_valid(char* sentence, int* max_stack_size) {
+static bool is_sentence_valid(char* sentence, int* max_stack_size) {
     int current_stack_size = 0;
     int parenthesis = 0;
     for (int i = 0; sentence[i] != '\0'; i++) {
@@ -37,7 +41,7 @@ bool is_sentence_valid(char* sentence, int* max_stack_size) {
     return !parenthesis;
 }
 
-void execute(BrainFuck* bf, char* sentence, int array[], bool* print) {
+static int execute(BrainFuck* bf, char* sentence, int array[], bool* print) {
     switch (sentence[bf->index]) {
         case ' ':
             break;
@@ -59,6 +63,9 @@ void execute(BrainFuck* bf, char* sentence, int array[], bool* print) {
             break;
         case ',':
             array[bf->pointer] = getchar();
+            if (!array[bf->pointer] || array[bf->pointer] == EOF) {
+                return 0;
+            }
             break;
         case '[':
             if (array[bf->pointer]) {
@@ -76,6 +83,7 @@ void execute(BrainFuck* bf, char* sentence, int array[], bool* print) {
             break;
     }
     bf->index++;
+    return 1;
 }
 
 Error decode(char* sentence, int array[]) {
@@ -89,7 +97,9 @@ Error decode(char* sentence, int array[]) {
         return ALLOCATION_ERROR;
     }
     while (sentence[bf.index] != '\0') {
-        execute(&bf, sentence, array, &print);
+        if (!execute(&bf, sentence, array, &print)) {
+            break;
+        }
     }
     if (print) {
         putchar('\n');
