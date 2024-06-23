@@ -13,14 +13,21 @@ static void write_n_times(char c, int n) {
 }
 
 static void write_loop_entry(void) {
-    putchar(LOOP);
+    putchar(LOOP_START);
     putchar(INCREMENT);
 }
 
 static void write_loop_end(void) {
     putchar(DECREMENT);
     putchar(SUB);
-    putchar(END);
+    putchar(LOOP_END);
+}
+
+static void write_new_line(void) {
+    putchar(INCREMENT);
+    write_n_times(ADD, '\n');
+    putchar(OUTPUT);
+    putchar(INCREMENT);
 }
 
 static int convert(char c, int pointer, int array[]) {
@@ -64,6 +71,10 @@ Error encode(char* sentence, int array[]) {
     }
     int pointer = 0;
     for (int i = 0; sentence[i] != '\0'; i++) {
+        if (sentence[i] == NEW_LINE) {
+            write_new_line();
+            continue;
+        }
         pointer = convert(sentence[i], pointer, array);
     }
     putchar('\n');

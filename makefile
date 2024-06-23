@@ -12,7 +12,7 @@ INCLUDE=-I$(INC_DIR)
 CFLAGS=-Wall -std=c17 -Wextra
 
 # Output
-EXEC=brainfuck
+EXEC=$(BIN_DIR)/brainfuck
 
 # Sources
 SOURCES=$(wildcard $(SRC_DIR)/*.c)
@@ -22,7 +22,7 @@ all: $(EXEC)
 
 $(EXEC): $(OBJS)
 	@mkdir --parents $(BIN_DIR)
-	$(CC) $^ -o $(BIN_DIR)/$@ $(LIBS)
+	$(CC) $^ -o $@ $(LIBS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir --parents $(BUILD_DIR)
@@ -32,4 +32,4 @@ clean:
 	rm -f $(OBJS)
 
 mrproper: clean
-	rm -f $(BIN_DIR)/$(EXEC)
+	rm -f $(EXEC)

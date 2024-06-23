@@ -15,7 +15,7 @@ void print_error(Error err) {
                                 "for more help\n");
             break;
         case INVALID_SENTENCE:
-            fprintf(stderr, RED "%sSENTENCE ERROR " RESET ": the given sentence"
+            fprintf(stderr, RED "SENTENCE ERROR " RESET ": the given sentence "
                             "contains invalid brainfuck characters\n"
                             "Check" PURPLE "'./brainfuck -h'" RESET 
                             "for more help\n");

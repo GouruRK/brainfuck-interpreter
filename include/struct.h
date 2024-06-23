@@ -9,15 +9,16 @@
 #define ARRAY_SIZE 30000
 
 typedef enum {
-    INCREMENT = '>',
-    DECREMENT = '<',
-    ADD = '+',
-    SUB = '-',
-    OUTPUT = '.',
-    INPUT = ',',
-    LOOP = '[',
-    END = ']',
-    SPACE = ' ',
+    INCREMENT  = '>',
+    DECREMENT  = '<',
+    ADD        = '+',
+    SUB        = '-',
+    OUTPUT     = '.',
+    INPUT      = ',',
+    LOOP_START = '[',
+    LOOP_END   = ']',
+    SPACE      = ' ',
+    NEW_LINE   = '\n' 
 } Characters;
 
 typedef enum {
@@ -25,16 +26,5 @@ typedef enum {
     DECODE,
     NONE
 } Action;
-
-typedef struct {
-    int pointer;
-    int index;
-    int* stack;
-    int depth;
-} BrainFuck;
-
-Error init_brainfuck(BrainFuck* bf, int max_stack_size);
-
-void free_brainfuck(BrainFuck* bf);
 
 #endif

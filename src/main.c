@@ -8,6 +8,16 @@
 #include "../include/parser.h"
 #include "../include/struct.h"
 
+static int manage_input(Args args) {
+    int array[ARRAY_SIZE] = {};
+    
+    if (args.act == ENCODE) {
+        return encode(args.input, array);
+    } else {
+        return decode(args.input, array);
+    }
+}
+
 int main(int argc, char* argv[]) {
     Args args = init_args();
     Error err = parse(&args, argc, argv);
@@ -19,13 +29,10 @@ int main(int argc, char* argv[]) {
         print_help();
         return 0;
     }
-    int array[ARRAY_SIZE] = {};
-    if (args.act == ENCODE) {
-        err = encode(args.input, array);
-    } else if (args.act == DECODE) {
-        err = decode(args.input, array);
-    }
+    
+    err = manage_input(args);
     if (err != OK) {
+        printf("%d\n", err);
         print_error(err);
         return 1;
     }

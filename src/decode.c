@@ -7,103 +7,69 @@
 #include "../include/struct.h"
 #include "../include/tools.h"
 
-static const int valid_chars[NB_CHARACTERS] = {
-    INCREMENT, DECREMENT, ADD, SUB, OUTPUT, INPUT, LOOP, END, SPACE
-};
+static bool has_print = false;
 
-static bool is_char_valid(char c) {
-    for (int i = 0; i < NB_CHARACTERS; i++) {
-        if ((int)c == valid_chars[i]) {
-            return true;
-        }
-    }
-    return false;
-}
+static int run(char* sentence, int array[], int index, int last_index) {
+    static int pointer = 0;
 
-static bool is_sentence_valid(char* sentence, int* max_stack_size) {
-    int current_stack_size = 0;
-    int parenthesis = 0;
-    for (int i = 0; sentence[i] != '\0'; i++) {
-        if (!is_char_valid(sentence[i])) {
-            return false;
+    while (sentence[index] != '\0') {
+        switch (sentence[index]) {
+            case NEW_LINE:
+            case SPACE:
+                break;
+            case INCREMENT:
+                pointer++;
+                break;
+            case DECREMENT:
+                pointer--;
+                break;
+            case ADD:
+                array[pointer]++;
+                break;
+            case SUB:
+                array[pointer]--;
+                break;
+            case OUTPUT:
+                putchar(array[pointer]);
+                has_print = true;
+                break;
+            case INPUT:
+                array[pointer] = getchar();
+                if (!array[pointer] || array[pointer] == EOF) {
+                    return -1;
+                }
+                break;
+            case LOOP_START:
+                if (array[pointer]) {
+                    index = run(sentence, array, index + 1, index);
+                    if (index == -1) return -1; 
+                } else {
+                    for (; sentence[index] != ']'; index++);
+                }
+                break;
+            case LOOP_END:
+                if (array[pointer]) {
+                    index = last_index;
+                } else {
+                    return index;
+                }
+                break;
+            default:
+                print_error(INVALID_SENTENCE);
+                return -1;
         }
-        if (sentence[i] == '[') {
-            parenthesis++;
-            current_stack_size = max(current_stack_size, parenthesis);
-        } else if (sentence[i] == ']') {
-            parenthesis--;
-        }
-        if (parenthesis < 0) {
-            return false;
-        }
+        index++;
     }
-    *max_stack_size = current_stack_size;
-    return !parenthesis;
-}
-
-static int execute(BrainFuck* bf, char* sentence, int array[], bool* print) {
-    switch (sentence[bf->index]) {
-        case ' ':
-            break;
-        case '>':
-            bf->pointer++;
-            break;
-        case '<':
-            bf->pointer--;
-            break;
-        case '+':
-            array[bf->pointer]++;
-            break;
-        case '-':
-            array[bf->pointer]--;
-            break;
-        case '.':
-            putchar(array[bf->pointer]);
-            *print = true;
-            break;
-        case ',':
-            array[bf->pointer] = getchar();
-            if (!array[bf->pointer] || array[bf->pointer] == EOF) {
-                return 0;
-            }
-            break;
-        case '[':
-            if (array[bf->pointer]) {
-                bf->stack[bf->depth++] = bf->index;
-            } else {
-                for (; sentence[bf->index] != ']'; bf->index++);
-            }
-            break;
-        case ']':
-            if (array[bf->pointer]) {
-                bf->index = bf->stack[bf->depth - 1];
-            } else {
-                bf->depth--;
-            }
-            break;
-    }
-    bf->index++;
-    return 1;
+    return index;
 }
 
 Error decode(char* sentence, int array[]) {
-    int max_stack_size;
-    BrainFuck bf;
-    bool print = false;
-    if (!is_sentence_valid(sentence, &max_stack_size)) {
+    int err;
+    if ((err = run(sentence, array, 0, 0)) == -1) {    
         return INVALID_SENTENCE;
     }
-    if (init_brainfuck(&bf, max_stack_size) != OK) {
-        return ALLOCATION_ERROR;
-    }
-    while (sentence[bf.index] != '\0') {
-        if (!execute(&bf, sentence, array, &print)) {
-            break;
-        }
-    }
-    if (print) {
+    if (has_print) {
         putchar('\n');
     }
-    free_brainfuck(&bf);
     return OK;
 }
