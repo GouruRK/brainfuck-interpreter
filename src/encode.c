@@ -6,6 +6,8 @@
 #include "../include/struct.h"
 #include "../include/tools.h"
 
+#define BUFFER_SIZE 256
+
 static void write_n_times(char c, int n) {
     for (int i = 0; i < n; i++) {
         putchar(c);
@@ -65,17 +67,29 @@ static int convert(char c, int pointer, int array[]) {
     return pointer;
 }
 
-Error encode(char* sentence, int array[]) {
-    if (sentence[0] == '\0') {
-        return OK;
-    }
-    int pointer = 0;
+static int convert_sentence(char* sentence, int array[], int pointer) {
     for (int i = 0; sentence[i] != '\0'; i++) {
         if (sentence[i] == NEW_LINE) {
             write_new_line();
             continue;
         }
         pointer = convert(sentence[i], pointer, array);
+    }
+    return pointer;
+}
+
+Error encode(char* input, int array[]) {
+    int pointer = 0;
+
+    FILE* file = fopen(input, "r");
+    if (!file) {
+        convert_sentence(input, array, pointer);
+    } else {
+        char buffer[BUFFER_SIZE];
+        while (fgets(buffer, BUFFER_SIZE, file)) {
+            pointer = convert_sentence(buffer, array, pointer);
+        }
+        fclose(file);
     }
     putchar('\n');
     return OK;
