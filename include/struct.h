@@ -27,4 +27,15 @@ typedef enum {
     NONE
 } Action;
 
+typedef struct {
+    bool from_file;
+    int curlen;
+    int maxlen;
+    long *stack;
+} BrainFuck;
+
+int init_brainfuck(BrainFuck *bf, bool from_file);
+int realloc_brainfuck(BrainFuck *bf);
+void free_brainfuck(BrainFuck *bf);
+
 #endif

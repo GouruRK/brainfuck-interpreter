@@ -20,21 +20,13 @@ static int manage_input(Args args) {
 
 int main(int argc, char* argv[]) {
     Args args = init_args();
-    Error err = parse(&args, argc, argv);
-    if (err != OK) {
-        print_error(err);
+    if (parse(&args, argc, argv) != OK) {
         return 1;
     }
     if (args.help) {
         print_help();
         return 0;
     }
-    
-    err = manage_input(args);
-    if (err != OK) {
-        printf("%d\n", err);
-        print_error(err);
-        return 1;
-    }
-    return 0;
+
+    return manage_input(args);
 }

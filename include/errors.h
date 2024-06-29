@@ -14,7 +14,11 @@ typedef enum {
     INVALID_SENTENCE
 } Error;
 
-void print_error(Error err);
+void allocation_error(void);
+
+void argument_required(void);
+
+void invalid_bf_char(void);
 
 void print_help(void);
 
