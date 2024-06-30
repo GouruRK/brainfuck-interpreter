@@ -25,9 +25,9 @@ static void write_loop_end(void) {
     putchar(LOOP_END);
 }
 
-static void write_new_line(void) {
+static void write_tabulation(void) {
     putchar(INCREMENT);
-    write_n_times(ADD, '\n');
+    write_n_times(ADD, '\t');
     putchar(OUTPUT);
     putchar(INCREMENT);
 }
@@ -43,9 +43,9 @@ static int convert(char c, int pointer, int array[]) {
         } else {
             write_n_times(ADD, delta);
         }
-        putchar(OUTPUT);
         array[pointer] += delta;
-    } else if (loop < delta) { // means that in order to get the wanted char, it needs to add values
+        putchar(OUTPUT);
+    } else if (loop < delta) { // means that in order to get the wanted char, it needs to add values        
         if (array[pointer]) {
             putchar(DECREMENT);
             pointer++;
@@ -60,6 +60,12 @@ static int convert(char c, int pointer, int array[]) {
         putchar(OUTPUT);
         pointer++;
         array[pointer] = c;
+    } else if (c == loop) {
+        putchar(INCREMENT);
+        write_n_times(ADD, c);
+        putchar(OUTPUT);
+        putchar(INCREMENT);
+        pointer += 2;
     } else { // means that in order to get the wanted char, it needs to decrease
         putchar(INCREMENT);
         return convert(c, pointer + 1, array);
@@ -69,11 +75,12 @@ static int convert(char c, int pointer, int array[]) {
 
 static int convert_sentence(char* sentence, int array[], int pointer) {
     for (int i = 0; sentence[i] != '\0'; i++) {
-        if (sentence[i] == NEW_LINE) {
-            write_new_line();
-            continue;
+        if (sentence[i] == '\t') {
+            write_tabulation();
+            pointer += 2;
+        } else {
+            pointer = convert(sentence[i], pointer, array);
         }
-        pointer = convert(sentence[i], pointer, array);
     }
     return pointer;
 }
