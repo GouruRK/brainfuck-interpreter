@@ -87,8 +87,12 @@ static int convert_sentence(char* sentence, int array[], int pointer) {
 
 Error encode(char* input, int array[]) {
     int pointer = 0;
-
-    FILE* file = fopen(input, "r");
+    FILE* file;
+    if (!input) {
+        file = stdin;
+    } else {
+        file = fopen(input, "r");
+    }
     if (!file) {
         convert_sentence(input, array, pointer);
     } else {
@@ -96,7 +100,9 @@ Error encode(char* input, int array[]) {
         while (fgets(buffer, BUFFER_SIZE, file)) {
             pointer = convert_sentence(buffer, array, pointer);
         }
-        fclose(file);
+        if (file != stdin) {
+            fclose(file);
+        }
     }
     putchar('\n');
     return OK;

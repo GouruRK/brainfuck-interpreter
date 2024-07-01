@@ -120,13 +120,21 @@ static int run(int array[], void* data, bool from_file) {
 }
 
 Error decode(char* input, int array[]) {
-    FILE* file = fopen(input, "r");
+    FILE* file;
     int output;
+
+    if (!input) {
+        file = stdin;
+    } else {
+        file = fopen(input, "r");
+    }
     if (!file) {
         output = run(array, input, false);
     } else {
         output = run(array, file, true);
-        fclose(file);
+        if (file != stdin) {
+            fclose(file);
+        }
     }
     if (has_print) {
         putchar('\n');
