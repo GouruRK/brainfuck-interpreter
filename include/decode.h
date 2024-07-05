@@ -13,6 +13,13 @@ typedef enum {
     STOP
 } DecodeEvent;
 
-Error decode(char* sentence, int array[]);
+/**
+ * @brief Main function to decode brainfuck code
+ * 
+ * @param input source to brainfuck code, either a brainfuck code or a file that
+ *              contains brainfuck
+ * @return 'OK' if everything's fine, else the error code
+ */
+Error decode(char* input);
 
 #endif

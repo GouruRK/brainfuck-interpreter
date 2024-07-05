@@ -18,7 +18,8 @@ typedef enum {
     LOOP_START = '[',
     LOOP_END   = ']',
     SPACE      = ' ',
-    NEW_LINE   = '\n' 
+    NEW_LINE   = '\n',
+    TABULATION = '\t'
 } Characters;
 
 typedef enum {
@@ -34,8 +35,28 @@ typedef struct {
     long *stack;
 } BrainFuck;
 
-int init_brainfuck(BrainFuck *bf, bool from_file);
-int realloc_brainfuck(BrainFuck *bf);
+/**
+ * @brief Initiate brainfuck structure with the default values
+ * 
+ * @param bf structure to initiate
+ * @param from_file indicate if the the input is a file or not
+ * @return error code
+ */
+Error init_brainfuck(BrainFuck *bf, bool from_file);
+
+/**
+ * @brief Realloc stack for given brainfuck structure
+ * 
+ * @param bf structure to realloc the stack
+ * @return
+ */
+Error realloc_brainfuck(BrainFuck *bf);
+
+/**
+ * @brief Free allocated memory for stack
+ * 
+ * @param bf structure to free
+ */
 void free_brainfuck(BrainFuck *bf);
 
 #endif

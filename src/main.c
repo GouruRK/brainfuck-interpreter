@@ -2,20 +2,17 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "../include/encode.h"
-#include "../include/errors.h"
-#include "../include/decode.h"
-#include "../include/parser.h"
-#include "../include/struct.h"
+#include "encode.h"
+#include "errors.h"
+#include "decode.h"
+#include "parser.h"
+#include "struct.h"
 
 static int manage_input(Args args) {
-    int array[ARRAY_SIZE] = {};
-    
     if (args.act == ENCODE) {
-        return encode(args.input, array);
-    } else {
-        return decode(args.input, array);
+        return encode(args.input);
     }
+    return decode(args.input);
 }
 
 int main(int argc, char* argv[]) {

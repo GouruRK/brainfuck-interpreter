@@ -1,12 +1,13 @@
-#include "../include/encode.h"
+#include "encode.h"
 
 #include <stdio.h>
 
-#include "../include/errors.h"
-#include "../include/struct.h"
-#include "../include/tools.h"
+#include "errors.h"
+#include "struct.h"
 
 #define BUFFER_SIZE 256
+
+#define ABS(a) (((a) < 0) ? (-(a)): (a))
 
 static void write_n_times(char c, int n) {
     for (int i = 0; i < n; i++) {
@@ -37,7 +38,7 @@ static int convert(char c, int pointer, int array[]) {
     int loop = 10;
     if (array[pointer] == c) {
         putchar(OUTPUT);
-    } else if (abs(delta) < loop) {
+    } else if (ABS(delta) < loop) {
         if (delta < 0) {
             write_n_times(SUB, -delta);
         } else {
@@ -85,8 +86,8 @@ static int convert_sentence(char* sentence, int array[], int pointer) {
     return pointer;
 }
 
-Error encode(char* input, int array[]) {
-    int pointer = 0;
+Error encode(char* input) {
+    int pointer = 0, array[ARRAY_SIZE] = {};
     FILE* file = fopen(input, "r");
     
     if (!file) {

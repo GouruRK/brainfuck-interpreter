@@ -14,12 +14,29 @@ typedef enum {
     INVALID_SENTENCE
 } Error;
 
+/**
+ * @brief Print message for an allocation error
+ * 
+ */
 void allocation_error(void);
 
+/**
+ * @brief Print message when an command line argument is missing
+ * 
+ */
 void argument_required(void);
 
+/**
+ * @brief Print message when the brainfuck message contains a non-brainfuck
+ *        character
+ * 
+ */
 void invalid_bf_char(void);
 
+/**
+ * @brief Print help message
+ * 
+ */
 void print_help(void);
 
 #endif

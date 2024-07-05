@@ -1,17 +1,17 @@
-#include "../include/decode.h"
+#include "decode.h"
 
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "../include/errors.h"
-#include "../include/struct.h"
-#include "../include/tools.h"
+#include "errors.h"
+#include "struct.h"
 
 static bool has_print = false;
 
 static DecodeEvent execute(int array[], char c) {
     static int pointer = 0;
     switch (c) {
+        case TABULATION:
         case NEW_LINE:
         case SPACE:
             break;
@@ -61,7 +61,7 @@ static DecodeEvent execute(int array[], char c) {
 static int manage_event(BrainFuck *bf, void* data, DecodeEvent code, long index) {
     if (code == BEGIN_LOOP) {
         if (bf->curlen == bf->maxlen) {
-            if (!realloc_brainfuck(bf)) {
+            if (realloc_brainfuck(bf) != OK) {
                 allocation_error();
                 return ERROR;
             }
@@ -89,8 +89,8 @@ static int run(int array[], void* data, bool from_file) {
     BrainFuck bf;
     long index = 0;
 
-    if (!init_brainfuck(&bf, from_file)) {
-        return 0;
+    if (init_brainfuck(&bf, from_file) != OK) {
+        return ALLOCATION_ERROR;
     }
 
     if (!from_file) {
@@ -119,8 +119,9 @@ static int run(int array[], void* data, bool from_file) {
     return 0;
 }
 
-Error decode(char* input, int array[]) {
+Error decode(char* input) {
     int output;
+    int array[ARRAY_SIZE] = {};
     FILE* file = fopen(input, "r");
 
     if (!file) {

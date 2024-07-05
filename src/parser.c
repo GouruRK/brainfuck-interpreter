@@ -1,10 +1,10 @@
-#include "../include/parser.h"
+#include "parser.h"
 
 #include <getopt.h>
 #include <stdlib.h>
 
-#include "../include/errors.h"
-#include "../include/struct.h"
+#include "errors.h"
+#include "struct.h"
 
 Args init_args(void) {
     Args args;
@@ -14,7 +14,15 @@ Args init_args(void) {
     return args;
 }
 
-Error parse_arguments(Args* args, int argc, char* argv[]) {
+/**
+ * @brief Read command lines arguments and fill the argument strucutre with
+ *        their correct values
+ * 
+ * @param args argument structure
+ * @param argc number of arguments given
+ * @param argv arguments given
+ */
+static void parse_arguments(Args* args, int argc, char* argv[]) {
     opterr = 0;
     int opt, opt_index = 0;
     static struct option long_options[] = {
@@ -47,14 +55,10 @@ Error parse_arguments(Args* args, int argc, char* argv[]) {
             args->input = argv[optind];
         }
     }
-    return OK;
 }
 
 Error parse(Args* args, int argc, char* argv[]) {
-    Error err = parse_arguments(args, argc, argv);
-    if (err != OK) {
-        return err;
-    } 
+    parse_arguments(args, argc, argv); 
     if ((!(args->input) || (args->act == NONE)) && !(args->help)) {
         argument_required();
         return ARGUMENT_REQUIRED;
