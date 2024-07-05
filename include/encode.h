@@ -1,5 +1,5 @@
-#ifndef __INIT_ENCODE__
-#define __INIT_ENCODE__
+#ifndef ENCODE_H
+#define ENCODE_H
 
 #include "errors.h"
 

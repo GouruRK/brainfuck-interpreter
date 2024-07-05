@@ -1,8 +1,7 @@
-#ifndef __INIT_DECODE__
-#define __INIT_DECODE__
+#ifndef DECODE_H
+#define DECODE_H
 
 #include "errors.h"
-#include "struct.h"
 
 typedef enum {
     ERROR = -1,

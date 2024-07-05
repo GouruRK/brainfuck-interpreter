@@ -1,5 +1,5 @@
-#ifndef __INIT_ERRORS__
-#define __INIT_ERRORS__
+#ifndef ERRORS_H
+#define ERRORS_H
 
 #define RESET  "\x1b[0m"
 #define RED    "\x1b[31m"

@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include "errors.h"
-#include "struct.h"
+#include "bf.h"
 
 #define BUFFER_SIZE 256
 

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "errors.h"
-#include "struct.h"
+#include "bf.h"
 
 Args init_args(void) {
     Args args;

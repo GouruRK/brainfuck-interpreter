@@ -4,7 +4,8 @@
 #include <stdbool.h>
 
 #include "errors.h"
-#include "struct.h"
+#include "stack.h"
+#include "bf.h"
 
 static bool has_print = false;
 
@@ -58,19 +59,20 @@ static DecodeEvent execute(int array[], char c) {
     return CONTINUE;
 }
 
-static int manage_event(BrainFuck *bf, void* data, DecodeEvent code, long index) {
+static int manage_event(Stack *stack, void* data, DecodeEvent code, long index,
+                        bool from_file) {
     if (code == BEGIN_LOOP) {
-        if (bf->curlen == bf->maxlen) {
-            if (realloc_brainfuck(bf) != OK) {
+        if (stack->curlen == stack->maxlen) {
+            if (realloc_stack(stack) != OK) {
                 allocation_error();
                 return ERROR;
             }
         }
-        bf->stack[bf->curlen++] = index;
+        stack->values[stack->curlen++] = index;
         return index;
     } else if (code == SKIP_LOOP) {
-        char c;
-        if (bf->from_file) {
+        if (from_file) {
+            char c;
             FILE* file = (FILE*)data;
             while ((c = fgetc(file)) != LOOP_END);
             return ftell(file);
@@ -79,17 +81,17 @@ static int manage_event(BrainFuck *bf, void* data, DecodeEvent code, long index)
             return index;
         }
     } else if (code == REWIND_LOOP) {
-        return bf->stack[bf->curlen - 1];
+        return stack->values[stack->curlen - 1];
     } 
     return index;
 }
 
 static int run(int array[], void* data, bool from_file) {
     DecodeEvent code;
-    BrainFuck bf;
+    Stack stack;
     long index = 0;
 
-    if (init_brainfuck(&bf, from_file) != OK) {
+    if (init_stack(&stack) != OK) {
         return ALLOCATION_ERROR;
     }
 
@@ -97,10 +99,10 @@ static int run(int array[], void* data, bool from_file) {
         while (((char*)data)[index] != '\0') {
             code = execute(array, ((char*)data)[index]);
             if (code == STOP || code == ERROR) {
-                free_brainfuck(&bf);
+                free_stack(&stack);
                 return code == STOP ? 0: 1;
             }
-            index = manage_event(&bf, data, code, index);
+            index = manage_event(&stack, data, code, index, from_file);
             index++;
         }
     } else {
@@ -108,14 +110,14 @@ static int run(int array[], void* data, bool from_file) {
         while ((c = fgetc((FILE*)data)) != EOF) {
             code = execute(array, c);
             if (code == STOP || code == ERROR) {
-                free_brainfuck(&bf);
+                free_stack(&stack);
                 return code == STOP ? 0: 1;
             }
-            index = manage_event(&bf, data, code, index) + 1;
+            index = manage_event(&stack, data, code, index, from_file) + 1;
             fseek((FILE*)data, index, SEEK_SET);
         }
     }
-    free_brainfuck(&bf);
+    free_stack(&stack);
     return 0;
 }
 

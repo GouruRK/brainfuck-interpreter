@@ -6,7 +6,6 @@
 #include "errors.h"
 #include "decode.h"
 #include "parser.h"
-#include "struct.h"
 
 static int manage_input(Args args) {
     if (args.act == ENCODE) {

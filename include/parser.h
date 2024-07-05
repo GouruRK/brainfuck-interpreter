@@ -1,8 +1,15 @@
-#ifndef __INIT_PARSER__
-#define __INIT_PARSER__
+#ifndef STACK_H
+#define STACK_H
+
+#include <stdbool.h>
 
 #include "errors.h"
-#include "struct.h"
+
+typedef enum {
+    ENCODE,
+    DECODE,
+    NONE
+} Action;
 
 typedef struct {
     bool help;
