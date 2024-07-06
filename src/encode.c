@@ -122,9 +122,7 @@ Error encode(char* input) {
         while (fgets(buffer, BUFFER_SIZE, file)) {
             convert_sentence(buffer);
         }
-        if (file != stdin) {
-            fclose(file);
-        }
+        fclose(file);
     }
     putchar('\n');
     return OK;
