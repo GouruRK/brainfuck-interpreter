@@ -6,7 +6,7 @@ Brainfuck coder and decoder made in C.
 - [Brainfuck Interpreter](#brainfuck-interpreter)
 - [Install](#install)
 - [Run](#run)
-- [Example](#example)
+- [Examples](#examples)
 
 # Install
 
@@ -17,7 +17,7 @@ git clone https://github.com/GouruRK/brainfuck-interpreter.git
 
 # Run
 
-Compile it using the `make` command :
+Compile it using the `make` command which produce "bin/brainfuck":
 ```shell
 cd brainfuck-interpreter
 make
@@ -25,31 +25,34 @@ make
 
 Once compile, use the following command to show the runtime options
 ```shell
-./brainfuck --help
+./bin/brainfuck --help
 ```
 Such as bellow
 ```
-./brainfuck [-d, --decode sentence] [-e, --encode sentence] [-h, --help]
-        [-d, --decode] Indicate to decode the given sentence
-                Require a non null string that contains a brainfuck sentence
-                A sentence must be composed by the characters : '<', '>', ',', '.', '+', '-', '[' and ']'
-        [-e, --encode] Indicate to encode the given sentence
-                Require a non null sentence
-        [-h, --help] Print this message
+Brainfuck interpreter
+
+./brainfuck [OPTIONS ...] <FILE | INPUT>
+        -d, --decode    Indicate to decode the given input
+        -e, --encode    Indicate to encode the given input
+        -h, --help      Print this message
 ```
 
-# Example
+# Examples
 
 Remember that brainfuck only allow the following characters : `'<'`, `'>'`, `','`, `'.'`, `'+'`, `'-'`, `'['` and `']'`. Spaces (`' '`) are allowed but skipped, as they don't belong to brainfuck's characters.
 
 * Encoding
 ```shell
-./brainfuck -e "Hello World"
+$ ./brainfuck -e "Hello World"
++++++++[>++++++++++<-]>++.<++[>++++++++++<-]>+++++++++.+++++++..+++.>+++[>++++++++++<-]>++.<+++++[>++++++++++<-]>+++++.<++[>++++++++++<-]>++++.+++.------.--------.
+$ ./brainfuck -e examples/hello_world.txt
 +++++++[>++++++++++<-]>++.<++[>++++++++++<-]>+++++++++.+++++++..+++.>+++[>++++++++++<-]>++.<+++++[>++++++++++<-]>+++++.<++[>++++++++++<-]>++++.+++.------.--------.
 ```
 
 * Decoding 
 ```shell
-./brainfuck -d "+++++++[>++++++++++<-]>++.<++[>++++++++++<-]>+++++++++.+++++++..+++.>+++[>++++++++++<-]>++.<+++++[>++++++++++<-]>+++++.<++[>++++++++++<-]>++++.+++.------.--------."
+$ ./brainfuck -d "+++++++[>++++++++++<-]>++.<++[>++++++++++<-]>+++++++++.+++++++..+++.>+++[>++++++++++<-]>++.<+++++[>++++++++++<-]>+++++.<++[>++++++++++<-]>++++.+++.------.--------."
+Hello World
+$ ./brainfuck -d examples/hello_world.bf
 Hello World
 ```

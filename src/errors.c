@@ -24,7 +24,7 @@ void invalid_bf_char(void) {
 void print_help(void) {
     printf("Brainfuck interpreter\n\n"
            "./brainfuck [OPTIONS ...] <FILE | INPUT>\n"
-           "\t[-d, --decode] Indicate to decode the given sentence\n"
-           "\t[-e, --encode] Indicate to encode the given sentence\n"
-           "\t[-h, --help] Print this message\n");
+           "\t-d, --decode\tIndicate to decode the given input\n"
+           "\t-e, --encode\tIndicate to encode the given input\n"
+           "\t-h, --help\tPrint this message\n");
 }
