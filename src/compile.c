@@ -5,7 +5,6 @@
 #include "bf.h"
 #include "errors.h"
 
-
 #define BUFFER_SIZE 256
 
 static void print_header(void) {
@@ -22,34 +21,63 @@ static void print_footer(void) {
            "}\n");
 }
 
+static int update_values(int n) {
+    if (n) {
+        printf("\tarray[pointer] += %d;\n", n);
+    }
+    return 0;
+}
+
+static int update_pointer(int n) {
+    if (n) {
+        printf("\tpointer += %d;\n", n);
+    }
+    return 0;
+}
+
 static void translate_char(char c) {
+    static int pointer_acc = 0;
+    static int values_acc = 0;
+
     switch (c) {
         case TABULATION:
         case NEW_LINE:
         case SPACE:
             break;
         case INCREMENT:
-            printf("\tpointer++;\n");
+            values_acc = update_values(values_acc);
+            pointer_acc++;
             break;
         case DECREMENT:
-            printf("\tpointer--;\n");
+            values_acc = update_values(values_acc);
+            pointer_acc--;
             break;
         case ADD:
-            printf("\tarray[pointer]++;\n");
+            pointer_acc = update_pointer(pointer_acc);
+            values_acc++;
             break;
         case SUB:
-            printf("\tarray[pointer]--;\n");
+            pointer_acc = update_pointer(pointer_acc);
+            values_acc--;
             break;
         case OUTPUT:
+            pointer_acc = update_pointer(pointer_acc);
+            values_acc = update_values(values_acc);
             printf("\tputchar(array[pointer]);\n");
             break;
         case INPUT:
+            pointer_acc = update_pointer(pointer_acc);
+            values_acc = update_values(values_acc);
             printf("\tarray[pointer] = getchar();\n");
             break;
         case LOOP_START:
+            pointer_acc = update_pointer(pointer_acc);
+            values_acc = update_values(values_acc);
             printf("\twhile(array[pointer]) {\n");
             break;
         case LOOP_END:
+            pointer_acc = update_pointer(pointer_acc);
+            values_acc = update_values(values_acc);
             printf("\t}\n");
             break;
         default:
