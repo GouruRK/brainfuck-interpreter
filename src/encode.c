@@ -81,7 +81,7 @@ static void convert(char c) {
         putchar(OUTPUT);
     } else {
         if (array[pointer]) {
-            // if the value is non-zero, go one value higher to zero
+            // if the value is non-zero, go to the next zero value
             putchar(INCREMENT);
             pointer++;
         }
