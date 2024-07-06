@@ -5,13 +5,18 @@
 #include "encode.h"
 #include "errors.h"
 #include "decode.h"
+#include "compile.h"
 #include "parser.h"
 
+typedef Error (*action_fun)(char*);
+
 static int manage_input(Args args) {
-    if (args.act == ENCODE) {
-        return encode(args.input);
-    }
-    return decode(args.input);
+    static const action_fun fun[] = {
+        [ENCODE] = encode,
+        [DECODE] = decode,
+        [COMPILE] = compile
+    };
+    return fun[args.act](args.input);
 }
 
 int main(int argc, char* argv[]) {

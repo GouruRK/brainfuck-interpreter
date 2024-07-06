@@ -26,12 +26,13 @@ static void parse_arguments(Args* args, int argc, char* argv[]) {
     opterr = 0;
     int opt, opt_index = 0;
     static struct option long_options[] = {
-        {"help",   no_argument, 0, 'h'},
-        {"encode", no_argument, 0, 'e'},
-        {"decode", no_argument, 0, 'd'},
-        {0,        0,           0, 0}
+        {"help",    no_argument, 0, 'h'},
+        {"encode",  no_argument, 0, 'e'},
+        {"decode",  no_argument, 0, 'd'},
+        {"compile", no_argument, 0, 'c'},
+        {0,         0,           0, 0}
     };
-    while ((opt = getopt_long(argc, argv, "hed", long_options, &opt_index)) != -1) {
+    while ((opt = getopt_long(argc, argv, "hedc", long_options, &opt_index)) != -1) {
         switch (opt) {
             case 'h':
                 args->help = true;
@@ -44,6 +45,11 @@ static void parse_arguments(Args* args, int argc, char* argv[]) {
             case 'd':
                 if (args->act == NONE) {
                     args->act = DECODE;
+                }
+                break;
+            case 'c':
+                if (args->act == NONE) {
+                    args->act = COMPILE;
                 }
                 break;
             default: 

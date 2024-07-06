@@ -8,6 +8,7 @@
 typedef enum {
     ENCODE,
     DECODE,
+    COMPILE,
     NONE
 } Action;
 
