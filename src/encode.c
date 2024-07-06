@@ -40,24 +40,13 @@ static void write_loop_end(void) {
 }
 
 /**
- * @brief Write brainfuck code to write tabulation
- * 
- */
-static void write_tabulation(void) {
-    putchar(INCREMENT);
-    write_n_times(ADD, '\t');
-    putchar(OUTPUT);
-    putchar(INCREMENT);
-}
-
-/**
  * @brief Convert the given character to brainfuck code
  * 
  * @param c character to convert
  * @param pointer current pointer in the array
  * @return next pointer
  */
-static int convert(char c, int pointer) {
+static void convert(char c) {
     // This function convert a character in brainfuck code. All character
     // representation is coded using their ASCII code.
     // To prevent writing too much time the same character, this code uses
@@ -69,8 +58,11 @@ static int convert(char c, int pointer) {
     // adjust it. If the current value in the array is close to the one we want,
     // then adjust it directly.
 
-    // array
+    // brainfuck core array
     static int array[ARRAY_SIZE] = {};
+
+    // brainfuck pointer in the array
+    static int pointer = 0;
 
     // delta between the value we want and the one we already have in the array
     int delta = c - array[pointer];
@@ -87,35 +79,23 @@ static int convert(char c, int pointer) {
         }
         array[pointer] += delta;
         putchar(OUTPUT);
-    } else if (LOOP < delta) {
-        // the value is too far, loop it and then adjust
+    } else {
         if (array[pointer]) {
-            putchar(DECREMENT);
+            // if the value is non-zero, go one value higher to zero
+            putchar(INCREMENT);
             pointer++;
         }
-        int init = delta / LOOP;
-        write_n_times(ADD, init);
+        // the value is too far, loop it and then adjust
+        write_n_times(ADD, c / LOOP);
         write_loop_entry();
         write_n_times(ADD, LOOP);
         write_loop_end();
         putchar(INCREMENT);
-        write_n_times(ADD, delta % 10);
+        write_n_times(ADD, c % LOOP);
         putchar(OUTPUT);
         pointer++;
         array[pointer] = c;
-    } else if (c == LOOP) {
-        // equals
-        putchar(INCREMENT);
-        write_n_times(ADD, c);
-        putchar(OUTPUT);
-        putchar(INCREMENT);
-        pointer += 2;
-    } else {
-        // means that in order to get the wanted char, it needs to decrease
-        putchar(INCREMENT);
-        return convert(c, pointer + 1);
     }
-    return pointer;
 }
 
 /**
@@ -125,28 +105,22 @@ static int convert(char c, int pointer) {
  * @param pointer pointer in the array
  * @return next pointer
  */
-static int convert_sentence(char* sentence, int pointer) {
+static void convert_sentence(char* sentence) {
     for (int i = 0; sentence[i] != '\0'; i++) {
-        if (sentence[i] == '\t') {
-            write_tabulation();
-            pointer += 2;
-        } else {
-            pointer = convert(sentence[i], pointer);
-        }
+        // convert each character of the sentence
+        convert(sentence[i]);
     }
-    return pointer;
 }
 
 Error encode(char* input) {
-    int pointer = 0;
     FILE* file = fopen(input, "r");
     
     if (!file) {
-        convert_sentence(input, pointer);
+        convert_sentence(input);
     } else {
         char buffer[BUFFER_SIZE];
         while (fgets(buffer, BUFFER_SIZE, file)) {
-            pointer = convert_sentence(buffer, pointer);
+            convert_sentence(buffer);
         }
         if (file != stdin) {
             fclose(file);
