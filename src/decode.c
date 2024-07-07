@@ -73,7 +73,7 @@ static DecodeEvent execute(char c) {
                 return CONTINUE;
             }
         default: // character is not a known brainfuck character
-            invalid_bf_char();
+            invalid_bf_char(c);
             return ERROR;
     }
     return CONTINUE;
@@ -142,12 +142,12 @@ static int manage_event(Stack *stack, void* data, DecodeEvent code, long index,
  * @return EXIT_SUCCESS | EXIT_FAILURE
  */
 static int run(void* data, bool from_file) {
-    DecodeEvent code;
+    int code;
     Stack stack;
     long index = 0;
 
     if (init_stack(&stack) != OK) {
-        return ALLOCATION_ERROR;
+        return ERROR;
     }
 
     if (!from_file) {
@@ -155,7 +155,7 @@ static int run(void* data, bool from_file) {
             code = execute(((char*)data)[index]);
             if (code == STOP || code == ERROR) {
                 free_stack(&stack);
-                return code == STOP ? EXIT_SUCCESS: EXIT_FAILURE;
+                return code == STOP ? OK: ERROR;
             }
             index = manage_event(&stack, data, code, index, from_file);
             index++;
@@ -166,14 +166,14 @@ static int run(void* data, bool from_file) {
             code = execute(c);
             if (code == STOP || code == ERROR) {
                 free_stack(&stack);
-                return code == STOP ? EXIT_SUCCESS: EXIT_FAILURE;
+                return code == STOP ? OK: ERROR;
             }
             index = manage_event(&stack, data, code, index, from_file);
             fseek((FILE*)data, index, SEEK_SET);
         }
     }
     free_stack(&stack);
-    return 0;
+    return OK;
 }
 
 Error decode(char* input) {

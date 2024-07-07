@@ -67,7 +67,7 @@ Error parse(Args* args, int argc, char* argv[]) {
     parse_arguments(args, argc, argv); 
     if ((!(args->input) || (args->act == NONE)) && !(args->help)) {
         argument_required();
-        return ARGUMENT_REQUIRED;
+        return ERROR;
     }
     return OK;
 }

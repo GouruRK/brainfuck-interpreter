@@ -4,8 +4,7 @@
 #include "errors.h"
 
 typedef enum {
-    ERROR = -1,
-    BEGIN_LOOP,
+    BEGIN_LOOP = 2,
     SKIP_LOOP,
     REWIND_LOOP,
     CONTINUE,

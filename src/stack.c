@@ -11,7 +11,7 @@ Error init_stack(Stack *stack) {
     stack->values = (long*)malloc(sizeof(long)*DEFAULT_LENGTH);
     if (!(stack->values)) {
         allocation_error();
-        return ALLOCATION_ERROR;
+        return ERROR;
     }
     stack->curlen = 0;
     stack->maxlen = DEFAULT_LENGTH;
@@ -23,7 +23,7 @@ Error realloc_stack(Stack *stack) {
     temp = realloc(temp, sizeof(long)*(stack->maxlen + DEFAULT_LENGTH));
     if (!temp) {
         allocation_error();
-        return ALLOCATION_ERROR;
+        return ERROR;
     }
     stack->values = temp;
     stack->maxlen += DEFAULT_LENGTH;

@@ -8,10 +8,8 @@
 #define CYAN   "\x1b[36m"
 
 typedef enum {
-    OK,
-    ALLOCATION_ERROR,
-    ARGUMENT_REQUIRED,
-    INVALID_SENTENCE
+    ERROR,
+    OK
 } Error;
 
 /**
@@ -31,12 +29,6 @@ void argument_required(void);
  *        character
  * 
  */
-void invalid_bf_char(void);
-
-/**
- * @brief Print help message
- * 
- */
-void print_help(void);
+void invalid_bf_char(char c);
 
 #endif

@@ -72,9 +72,8 @@ static Error translate_char(char c) {
     // To prevent having a lot of incrementations by one on both pointer and 
     // values, this function uses two static variables written below to 
     // accumulate the values and then write the full incrementation. For
-    // example, the brainfuck code '>>>' will not be 'pointer++;pointer++;
-    // pointer++;' but 'pointer += 3;'. It prints the values when an other
-    // character is read
+    // example, the brainfuck code '>>>' will not be three times 'pointer++;' 
+    // but 'pointer += 3;'. It prints the values when an other character is read
 
     // accumulator of the array index
     static int pointer_acc = 0;
@@ -124,8 +123,8 @@ static Error translate_char(char c) {
             printf("\t}\n");
             break;
         default:
-            invalid_bf_char();
-            return INVALID_SENTENCE;
+            invalid_bf_char(c);
+            return ERROR;
     }
     return OK;
 }
@@ -139,7 +138,7 @@ static Error translate_char(char c) {
 static Error convert_sentence(char* string) {
     for (int i = 0; string[i] != '\0'; i++) {
         if (translate_char(string[i]) != OK) {
-            return INVALID_SENTENCE;
+            return ERROR;
         }
     }
     return OK;
@@ -151,14 +150,14 @@ Error compile(char* input) {
 
     if (!file) {
         if (convert_sentence(input) != OK) {
-            return INVALID_SENTENCE;
+            return ERROR;
         }
     } else {
         char buffer[BUFFER_SIZE];
         while (fgets(buffer, BUFFER_SIZE, file)) {
             if (convert_sentence(buffer) != OK) {
                 fclose(file);
-                return INVALID_SENTENCE;
+                return ERROR;
             }
         }
         fclose(file);
