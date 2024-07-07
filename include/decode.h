@@ -15,8 +15,8 @@ typedef enum {
 /**
  * @brief Main function to decode brainfuck code
  * 
- * @param input source to brainfuck code, either a brainfuck code or a file that
- *              contains brainfuck
+ * @param input source of brainfuck code, either a brainfuck string or a file
+ *              that contains brainfuck
  * @return 'OK' if everything's fine, else the error code
  */
 Error decode(char* input);

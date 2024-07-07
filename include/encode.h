@@ -6,8 +6,7 @@
 /**
  * @brief Main function to encode brainfuck code
  * 
- * @param input source to brainfuck code, either a brainfuck code or a file that
- *              contains brainfuck
+ * @param input source to encode, either a file or a string
  * @return 'OK' if everything's fine, else the error code
  */
 Error encode(char* input);
