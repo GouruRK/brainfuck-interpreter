@@ -6,6 +6,7 @@
 #include "errors.h"
 
 #define BUFFER_SIZE 256
+#define SEPARATORS " \t\r\n"
 
 /**
  * @brief Print C-file header and start of main function
@@ -82,10 +83,6 @@ static Error translate_char(char c) {
     static int values_acc = 0;
 
     switch (c) {
-        case TABULATION: // 
-        case NEW_LINE:   // Characters to skip
-        case SPACE:      // 
-            break;
         case INCREMENT:  // '>'
             values_acc = update_values(values_acc);
             pointer_acc++;
@@ -123,6 +120,11 @@ static Error translate_char(char c) {
             printf("\t}\n");
             break;
         default:
+            for (int i = 0; SEPARATORS[i] != '\0'; i++) {
+                if (c == SEPARATORS[i]) {
+                    return OK;
+                }
+            }
             invalid_bf_char(c);
             return ERROR;
     }

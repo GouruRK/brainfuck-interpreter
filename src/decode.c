@@ -8,6 +8,8 @@
 #include "stack.h"
 #include "bf.h"
 
+#define SEPARATORS " \t\r\n"
+
 // Value to be update whenever the 'OUTPUT' character has been read
 static bool has_print = false;
 
@@ -33,10 +35,6 @@ static DecodeEvent execute(char c) {
     static int array[ARRAY_SIZE] = {};
     
     switch (c) {
-        case TABULATION:    // 
-        case NEW_LINE:      // Character with no influence on the brainfuck
-        case SPACE:         // 
-            break;
         case INCREMENT:     // the '>' sign: increment the pointer
             pointer++;
             break;
@@ -73,6 +71,11 @@ static DecodeEvent execute(char c) {
                 return CONTINUE;
             }
         default: // character is not a known brainfuck character
+            for (int i = 0; SEPARATORS[i] != '\0'; i++) {
+                if (c == SEPARATORS[i]) {
+                    return OK;
+                }
+            }
             invalid_bf_char(c);
             return ERROR;
     }

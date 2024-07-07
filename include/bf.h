@@ -13,9 +13,6 @@ typedef enum {
     INPUT      = ',',
     LOOP_START = '[',
     LOOP_END   = ']',
-    SPACE      = ' ',
-    NEW_LINE   = '\n',
-    TABULATION = '\t'
 } Characters;
 
 #endif
